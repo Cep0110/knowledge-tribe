@@ -1,4 +1,4 @@
-<?php
+  <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -12,7 +12,7 @@ $role = $_SESSION['role'];
 $user_id = $_SESSION['user_id'];
 
 // Check if student exists and if the user has permission to edit
-$stmt = $pdo->prepare("SELECT * FROM students WHERE id = ?");
+$stmt = $pdo->prepare("SELECT s.*, u.email FROM students s JOIN users u ON s.user_id = u.id WHERE s.id = ?");
 $stmt->execute([$id]);
 $student = $stmt->fetch();
 
@@ -53,6 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="text" name="first_name" value="<?php echo htmlspecialchars($student['first_name']); ?>" required>
             <label>Last Name:</label>
             <input type="text" name="last_name" value="<?php echo htmlspecialchars($student['last_name']); ?>" required>
+            <label>Email:</label>
+            <input type="email" name="email" value="<?php echo htmlspecialchars($student['email']); ?>" required>
             <label>Phone:</label>
             <input type="text" name="phone" value="<?php echo htmlspecialchars($student['phone']); ?>" required>
             <button type="submit" style="background: #ff7200; color: white; padding: 10px; border: none; cursor: pointer;">Update</button>
